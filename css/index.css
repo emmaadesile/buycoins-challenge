@@ -182,7 +182,6 @@ header {
   .g__main {
     flex-direction: column;
     margin: 0;
-    /* margin-left: 0.5rem; */
   }
 
   .g__main-left {
@@ -195,10 +194,6 @@ header {
   
   .g__nav-items {
     width: 100vw;
-  }
-  
-  .reporSearchBox {
-    /* width: 50%; */
   }
 
   .avatarContainer {
@@ -344,7 +339,6 @@ header {
 .g__nav-items {
   display: flex;
   align-items: center;
-  /* width: 100%; */
 }
 
 .g__nav-item {

@@ -7,7 +7,7 @@ const profileBio = document.querySelector('.profile__bio');
 const repoCount = document.querySelectorAll('.repo__count');
 const reposContainer = document.querySelector('.profile__repos');
 const repos = document.querySelector('.profile__repos');
-const reposCount = document.querySelector('.publicRepos__count');
+const reposReposNode = document.querySelector('.publicRepos__count');
 
 // Toggle mobile nav items
 hamburgerMenu.addEventListener('click', () => {
@@ -46,27 +46,36 @@ const githubProfileQuery = `
     }
   }
 `;
-const token = "99a8e74b7c168ee24ab56cbb7a4ebbe3b6f8af88";
+
+const getAuthToken = () => {
+  return fetch('https://token-hide.herokuapp.com/')
+  .then(res => res.json())
+  .then(res => res.token);
+}
+
 const url = "https://api.github.com/graphql";
 
-// fetch options
-const options = {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    "Authorization": `Bearer ${token}`
-  },
-  body: JSON.stringify({
-    query: githubProfileQuery
-  })
-};
+async function fetchGithubData() {
+  const token = await getAuthToken();
 
-function fetchGithubData() {
+  // fetch options
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
+    body: JSON.stringify({
+      query: githubProfileQuery
+    })
+  };
+
   return fetch(url, options)
   .then(res => res.json())
   .then(res => res.data)
 }
 
+// load github data
 async function loadData() {
   const data = await fetchGithubData();
 
@@ -87,7 +96,7 @@ async function loadData() {
   repoCount.forEach(repoNode => repoNode.textContent = `${totalCount}`); 
 
   const publicReposCount = edges.filter(({node}) => !node.isPrivate).length;
-  reposCount.innerHTML = `
+  reposReposNode.innerHTML = `
     <strong>${publicReposCount}</strong> results found for <strong>public</strong> repositories`;
   
   const wrapper = document.createElement('div');
